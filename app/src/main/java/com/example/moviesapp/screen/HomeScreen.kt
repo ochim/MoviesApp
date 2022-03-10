@@ -1,5 +1,6 @@
 package com.example.moviesapp.screen
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,12 +11,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
+import coil.size.Scale
+import com.example.moviesapp.BuildConfig
 import com.example.moviesapp.Movie
 import com.example.moviesapp.R
 import com.example.moviesapp.ui.theme.AppContentColor
@@ -101,6 +106,22 @@ fun MovieListItem(movie: Movie) {
                 },
             verticalAlignment = Alignment.CenterVertically
         ) {
+            movie.posterPath?.let {
+                Image(
+                    modifier = Modifier
+                        .padding(
+                            end = 4.dp,
+                        )
+                        .width(120.dp),
+                    painter = rememberImagePainter(
+                        data = BuildConfig.POSTER_URL + movie.posterPath, builder = {
+                            crossfade(true)
+                            scale(Scale.FILL)
+                        }),
+                    contentDescription = null,
+                    contentScale = ContentScale.Fit
+                )
+            }
             Column(
                 Modifier
                     .height(IntrinsicSize.Max)
