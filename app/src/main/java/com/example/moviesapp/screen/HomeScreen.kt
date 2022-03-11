@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -26,23 +27,32 @@ import com.example.moviesapp.R
 import com.example.moviesapp.ui.theme.AppContentColor
 import com.example.moviesapp.ui.theme.AppThemeColor
 import com.example.moviesapp.ui.theme.ItemBackgroundColor
+import com.example.moviesapp.ui.theme.MoviesAppTheme
 
-@Composable
-fun HomeScreen(
-    movie: Movie = Movie(
+private val testMovies = listOf(
+    Movie(
         overview = "Peter Parker is unmasked and no longer able to separate his normal life from the high-stakes of being a super-hero. When he asks for help from Doctor Strange the stakes become even more dangerous, forcing him to discover what it truly means to be Spider-Man.",
         posterPath = "/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
         title = "Spider-Man: No Way Home",
         rating = "8.3",
         releaseDate = "2021-12-15"
+    ), Movie(
+        overview = "In his second year of fighting crime, Batman uncovers corruption in Gotham City that connects to his own family while facing a serial killer known as the Riddler.",
+        posterPath = "/74xTEgt7R36Fpooo50r9T25onhq.jpg",
+        title = "The Batman",
+        rating = "8.1",
+        releaseDate = "2022-03-01"
     )
-) {
+)
+
+@Composable
+fun HomeScreen() {
     Scaffold(
         topBar = {
             HomeTopBar()
         },
         content = {
-            MovieListContent(movie)
+            MovieListContent()
         }
     )
 }
@@ -76,14 +86,15 @@ fun HomeTopBar(
 }
 
 @Composable
-fun MovieListContent(movie: Movie) {
+fun MovieListContent() {
+
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
     ) {
         items(
-            1
+            testMovies
         ) {
-            MovieListItem(movie = movie)
+            MovieListItem(movie = it)
         }
     }
 }
@@ -169,5 +180,25 @@ fun RatingComponent(rating: String) {
 @Preview("Light Theme", widthDp = 360, heightDp = 640)
 @Composable
 fun HomePreview() {
-    HomeScreen()
+    MoviesAppTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colors.background
+        ) {
+            HomeScreen()
+        }
+    }
+}
+
+@Preview("Dark Theme", widthDp = 360, heightDp = 640)
+@Composable
+fun HomeDarkPreview() {
+    MoviesAppTheme(darkTheme = true) {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colors.background
+        ) {
+            HomeScreen()
+        }
+    }
 }
