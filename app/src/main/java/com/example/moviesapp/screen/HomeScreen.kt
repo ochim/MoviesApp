@@ -19,14 +19,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberImagePainter
 import coil.size.Scale
 import com.example.moviesapp.BuildConfig
 import com.example.moviesapp.Movie
 import com.example.moviesapp.R
-import com.example.moviesapp.navigation.Screen
 import com.example.moviesapp.testMovies
 import com.example.moviesapp.ui.theme.AppContentColor
 import com.example.moviesapp.ui.theme.AppThemeColor
@@ -34,13 +31,13 @@ import com.example.moviesapp.ui.theme.ItemBackgroundColor
 import com.example.moviesapp.ui.theme.MoviesAppTheme
 
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen(navigateToMovieDetails: (movieId: Int) -> Unit) {
     Scaffold(
         topBar = {
             HomeTopBar()
         },
         content = {
-            MovieListContent(navController)
+            MovieListContent(navigateToMovieDetails)
         }
     )
 }
@@ -74,7 +71,7 @@ fun HomeTopBar(
 }
 
 @Composable
-fun MovieListContent(navController: NavHostController) {
+fun MovieListContent(navigateToMovieDetails: (movieId: Int) -> Unit) {
 
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
@@ -82,13 +79,13 @@ fun MovieListContent(navController: NavHostController) {
         items(
             testMovies
         ) {
-            MovieListItem(movie = it, navController = navController)
+            MovieListItem(movie = it, navigateToMovieDetails)
         }
     }
 }
 
 @Composable
-fun MovieListItem(movie: Movie, navController: NavHostController) {
+fun MovieListItem(movie: Movie, navigateToMovieDetails: (movieId: Int) -> Unit) {
     Card(
         modifier = Modifier
             .padding(top = 8.dp)
@@ -102,11 +99,11 @@ fun MovieListItem(movie: Movie, navController: NavHostController) {
                 .height(IntrinsicSize.Max)
                 .fillMaxWidth()
                 .clickable {
-                           navController.navigate(route = Screen.MovieDetails.passMovieId(movie.movieId))
+                    navigateToMovieDetails(movie.movieId)
                 },
             verticalAlignment = Alignment.CenterVertically,
 
-        ) {
+            ) {
             movie.posterPath?.let {
                 Image(
                     modifier = Modifier
@@ -175,7 +172,7 @@ fun HomePreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            HomeScreen(rememberNavController())
+            HomeScreen {}
         }
     }
 }
@@ -188,7 +185,7 @@ fun HomeDarkPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            HomeScreen(rememberNavController())
+            HomeScreen {}
         }
     }
 }

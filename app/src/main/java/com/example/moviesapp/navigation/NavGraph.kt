@@ -11,12 +11,15 @@ import com.example.moviesapp.screen.MovieDetailsScreen
 
 @Composable
 fun AppNavGraph(navController: NavHostController) {
+    val navigateToMovieDetails: (movieId: Int) -> Unit =
+        { movieId -> navController.navigate(Screen.MovieDetails.passMovieId(movieId)) }
+
     NavHost(
         navController = navController,
         startDestination = Screen.Home.route
     ) {
         composable(route = Screen.Home.route) {
-            HomeScreen(navController)
+            HomeScreen(navigateToMovieDetails)
         }
         composable(
             route = Screen.MovieDetails.route,
