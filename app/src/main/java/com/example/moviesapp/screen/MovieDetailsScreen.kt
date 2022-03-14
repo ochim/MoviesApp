@@ -1,6 +1,7 @@
 package com.example.moviesapp.screen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -19,15 +20,19 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import coil.size.Scale
 import com.example.moviesapp.BuildConfig
-import com.example.moviesapp.Movie
+import com.example.moviesapp.domain.Movie
 import com.example.moviesapp.R
-import com.example.moviesapp.testMovies
+import com.example.moviesapp.domain.testMovies
 import com.example.moviesapp.ui.theme.AppContentColor
 import com.example.moviesapp.ui.theme.AppThemeColor
 import com.example.moviesapp.ui.theme.MoviesAppTheme
 
 @Composable
-fun MovieDetailsScreen(popBackStack: () -> Unit, movieId: Int) {
+fun MovieDetailsScreen(
+    popBackStack: () -> Unit,
+    navigateToMovieVideos: (movieId: Int) -> Unit,
+    movieId: Int
+) {
     val movie = testMovies[movieId]
     Scaffold(
         topBar = {
@@ -36,7 +41,7 @@ fun MovieDetailsScreen(popBackStack: () -> Unit, movieId: Int) {
         contentColor = MaterialTheme.colors.AppContentColor,
         backgroundColor = MaterialTheme.colors.AppThemeColor,
         content = {
-            MovieDetailsContent(movie)
+            MovieDetailsContent(movie, navigateToMovieVideos)
         })
 }
 
@@ -69,7 +74,10 @@ fun MovieDetailsTopBar(
 }
 
 @Composable
-fun MovieDetailsContent(movie: Movie) {
+fun MovieDetailsContent(
+    movie: Movie,
+    navigateToMovieVideos: (movieId: Int) -> Unit,
+) {
     val scrollState = rememberScrollState()
     Card(
         elevation = 0.dp,
@@ -89,7 +97,8 @@ fun MovieDetailsContent(movie: Movie) {
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(350.dp),
+                    .height(350.dp)
+                    .clickable { navigateToMovieVideos(movie.movieId) },
                 contentScale = ContentScale.FillWidth
             )
             Column(modifier = Modifier.padding(8.dp)) {
@@ -144,7 +153,7 @@ fun MovieDetailsPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            MovieDetailsScreen({}, movieId = 0)
+            MovieDetailsScreen({}, {}, movieId = 0)
         }
     }
 }
@@ -157,7 +166,7 @@ fun MovieDetailsDarkPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            MovieDetailsScreen({}, movieId = 0)
+            MovieDetailsScreen({}, {}, movieId = 0)
         }
     }
 }

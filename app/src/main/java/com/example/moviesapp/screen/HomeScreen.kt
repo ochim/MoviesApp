@@ -22,9 +22,9 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import coil.size.Scale
 import com.example.moviesapp.BuildConfig
-import com.example.moviesapp.Movie
 import com.example.moviesapp.R
-import com.example.moviesapp.testMovies
+import com.example.moviesapp.domain.Movie
+import com.example.moviesapp.domain.testMovies
 import com.example.moviesapp.ui.theme.AppContentColor
 import com.example.moviesapp.ui.theme.AppThemeColor
 import com.example.moviesapp.ui.theme.ItemBackgroundColor
