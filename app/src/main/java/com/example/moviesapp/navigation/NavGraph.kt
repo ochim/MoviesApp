@@ -26,7 +26,7 @@ fun AppNavGraph(navController: NavHostController) {
             arguments = listOf(navArgument(DETAILS_ARGUMENT_KEY) { type = NavType.IntType })
         ) { backStackEntry ->
             backStackEntry.arguments?.getInt(DETAILS_ARGUMENT_KEY)?.let {
-                MovieDetailsScreen(navHostController = navController, movieId = it)
+                MovieDetailsScreen(popBackStack = { navController.popBackStack() }, movieId = it)
             }
         }
     }
