@@ -45,6 +45,7 @@ import com.example.moviesapp.domain.VideoEntity
 import com.example.moviesapp.domain.testMovies
 import com.example.moviesapp.ui.theme.AppContentColor
 import com.example.moviesapp.ui.theme.AppThemeColor
+import com.example.moviesapp.ui.theme.TitleColor
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.ui.PlayerView
 
@@ -196,7 +197,7 @@ fun ShowTrailers(
                     width = Dimension.preferredWrapContent
                     height = Dimension.wrapContent
                 },
-            color = MaterialTheme.colors.background,
+            color = MaterialTheme.colors.TitleColor,
             textAlign = TextAlign.Center,
             softWrap = true,
             style = MaterialTheme.typography.subtitle1
