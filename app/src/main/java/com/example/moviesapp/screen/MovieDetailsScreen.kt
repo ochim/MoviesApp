@@ -1,9 +1,10 @@
 package com.example.moviesapp.screen
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -11,6 +12,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -20,8 +22,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import coil.size.Scale
 import com.example.moviesapp.BuildConfig
-import com.example.moviesapp.domain.Movie
 import com.example.moviesapp.R
+import com.example.moviesapp.domain.Movie
 import com.example.moviesapp.domain.testMovies
 import com.example.moviesapp.ui.theme.AppContentColor
 import com.example.moviesapp.ui.theme.AppThemeColor
@@ -88,19 +90,26 @@ fun MovieDetailsContent(
                 .fillMaxWidth()
                 .verticalScroll(scrollState)
         ) {
-            Image(
-                painter = rememberImagePainter(
-                    data = BuildConfig.POSTER_URL + movie.posterPath, builder = {
-                        crossfade(true)
-                        scale(Scale.FIT)
-                    }),
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(350.dp)
-                    .clickable { navigateToMovieVideos(movie.movieId) },
-                contentScale = ContentScale.FillWidth
-            )
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = rememberImagePainter(
+                        data = BuildConfig.POSTER_URL + movie.posterPath, builder = {
+                            crossfade(true)
+                            scale(Scale.FIT)
+                        }),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(350.dp),
+                    contentScale = ContentScale.FillWidth
+                )
+                PlayVideos(navigateToMovieVideos = {
+                    navigateToMovieVideos(movie.movieId)
+                })
+            }
             Column(modifier = Modifier.padding(8.dp)) {
                 Spacer(modifier = Modifier.height(16.dp))
                 movie.title?.let {
@@ -144,6 +153,30 @@ fun ReleaseDateComponent(releaseDate: String) {
         Text(text = releaseDate, style = MaterialTheme.typography.body2)
     }
 }
+
+@Composable
+fun PlayVideos(
+    navigateToMovieVideos: () -> Unit,
+) {
+    Box {
+        IconButton(onClick = navigateToMovieVideos) {
+            Image(
+                modifier = Modifier
+                    .width(50.dp)
+                    .height(50.dp)
+                    .graphicsLayer {
+                        shadowElevation = 20.dp.toPx()
+                        shape = RoundedCornerShape(15.dp)
+                        clip = true
+                    }
+                    .background(MaterialTheme.colors.primary),
+                painter = painterResource(id = R.drawable.ic_play),
+                contentDescription = stringResource(id = R.string.details_play_videos)
+            )
+        }
+    }
+}
+
 
 @Preview("Light Theme", widthDp = 360, heightDp = 640)
 @Composable
